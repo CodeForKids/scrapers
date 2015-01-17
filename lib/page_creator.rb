@@ -3,7 +3,7 @@ require 'nokogiri'
 
 class PageCreator
 
-  def self.new_from_rss(rss_item, source)
+  def self.new_from_rss(rss_item, source, class_match)
     content = rss_item.content_encoded || rss_item.description
     { title:    rss_item.title,
       content:  content,
@@ -11,7 +11,7 @@ class PageCreator
       url:      rss_item.link,
       category: pull_category_from_rss_item(rss_item),
       author:   rss_item.author || rss_item.dc_creator,
-      image:    pull_image_from_content(content, rss_item.link),
+      image:    pull_image_from_content(content, rss_item.link, class_match),
       source:   source }
   end
 
@@ -36,7 +36,7 @@ class PageCreator
 
   def self.clean_url(url)
     unless url && url.start_with?("http")
-      uri = URI.parse(self.url)
+      uri = URI.parse(url)
       url = "#{uri.scheme}://#{uri.host}#{url}"
     end
     url
