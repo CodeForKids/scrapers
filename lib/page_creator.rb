@@ -1,3 +1,4 @@
+require 'net/http'
 require 'uri'
 require 'nokogiri'
 
@@ -35,11 +36,21 @@ class PageCreator
   private
 
   def self.clean_url(url)
-    if url && !url.start_with?("http")
-      uri = URI.parse(url)
-      url = "#{uri.scheme}://#{uri.host}#{url}"
-    end
+    uri = URI.parse(url) if url
+    url = "#{uri.scheme}://#{uri.host}#{url}" if url && !url.start_with?("http")
+    url = nil if url && url_404s?(url)
     url
+  end
+
+  def self.url_404s?(url)
+    begin
+      url = URI.parse(url)
+      req = Net::HTTP.new(url.host, url.port)
+      res = req.request_head(url.path)
+      res.code == "404"
+    rescue
+      true
+    end
   end
 
   def self.pull_category_from_rss_item(rss_item)
