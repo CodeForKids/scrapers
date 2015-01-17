@@ -22,7 +22,7 @@ class PageCreator
       url:      cfk_hash["url"][0..-6],
       category: category,
       author:   cfk_hash["most_common_committer"]["username"],
-      image:    pull_image_from_content(cfk_hash["content"], cfk_hash["url"][0..-6], '.inner-content'),
+      image:    pull_image_from_content(cfk_hash["content"], cfk_hash["url"][0..-6], '.page-content'),
       source:   source }
   end
 
