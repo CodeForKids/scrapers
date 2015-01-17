@@ -35,7 +35,7 @@ class PageCreator
   private
 
   def self.clean_url(url)
-    unless url && url.start_with?("http")
+    if url && !url.start_with?("http")
       uri = URI.parse(url)
       url = "#{uri.scheme}://#{uri.host}#{url}"
     end
