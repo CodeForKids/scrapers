@@ -18,7 +18,7 @@ class CodeForKidsWiki
     pages.times do |page|
       url = "#{CFK_WIKI_URL}/category/#{category.handle}.json?per_page=#{per_page}&page=#{page + 1}"
       HTTParty.get(url).parsed_response["pages"].each do |page_hash|
-        category_pages << Page.new_from_cfk_wiki(page_hash, category.name, CFK_WIKI_URL)
+        category_pages << PageCreator.new_from_cfk_wiki(page_hash, category.name, CFK_WIKI_URL)
       end
     end
 
