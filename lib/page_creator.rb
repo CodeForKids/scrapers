@@ -12,7 +12,7 @@ class PageCreator
       url:      rss_item.link,
       category: pull_category_from_rss_item(rss_item),
       author:   rss_item.author || rss_item.dc_creator,
-      image:    pull_image_from_content(content, rss_item.link, class_match),
+      image:    pull_image_from_content(rss_item.link, class_match),
       source:   source }
   end
 
@@ -23,12 +23,12 @@ class PageCreator
       url:      cfk_hash["url"][0..-6],
       category: category,
       author:   cfk_hash["most_common_committer"]["username"],
-      image:    pull_image_from_content(cfk_hash["content"], cfk_hash["url"][0..-6], '.page-content'),
+      image:    pull_image_from_content(cfk_hash["url"][0..-6], '.page-content'),
       source:   source }
   end
 
-  def self.pull_image_from_content(content, url, class_match=nil)
-    image = Nokogiri::HTML(content).search('img').first || Nokogiri::HTML(open(url)).search("#{class_match} img").first
+  def self.pull_image_from_content(url, class_match=nil)
+    image = Nokogiri::HTML(open(url)).search("#{class_match} img").first
     image_url = image['src'] if image
     clean_url(image_url)
   end
