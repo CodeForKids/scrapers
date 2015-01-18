@@ -20,7 +20,7 @@ module Scrapers::Pages
 
   def self.tynker_blog
     puts "Fetching Tynker blog"
-    RSSParser.parse("http://www.tynker.com/blog/feed/", ".one-post")
+    RSSParser.parse("http://www.tynker.com/blog/feed/", ".post-body")
   end
 
   def self.code_org_blog
